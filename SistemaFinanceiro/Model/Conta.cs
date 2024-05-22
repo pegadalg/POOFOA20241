@@ -6,16 +6,27 @@ namespace SistemaFinanceiro.Model
     {
         private long _numero;
         private decimal _saldo;
+        public Agencia agencia;
 
         public Conta(long numero)
         {
-            _numero = numero;
+            this._numero = numero;
         }
 
         public Conta(long numero, decimal saldo) 
         {
-            _numero = numero;
-            _saldo = saldo;
+            this._numero = numero;
+
+
+            if (saldo > 10 )
+            {
+                _saldo = saldo;
+            }
+            else
+            {
+                Console.WriteLine("Seu saldo deve ser maior do que 10");
+            }
+            
         }
 
         public long Numero 
@@ -34,44 +45,45 @@ namespace SistemaFinanceiro.Model
         
         }
 
-        public void Depositar(decimal valor)
+        public decimal Depositar(decimal valor)
         {
              
-                if (valor <= 0)
+                if (valor > 0)
+                {
+                    _saldo += valor;
+                    return _saldo;
+                }
+
+                else
                 {
                     //Console.WriteLine("Valor inválido"); 
                     throw new OperacaoInvalidaException($"O valor de depósito: {valor:C} é inválido");
-                }
-                else
-                {
-                    _saldo += valor;
-                Console.WriteLine($"Depósito de {valor:C} realizado com sucesso");
                 }
             
             
 
         }
 
-        public void Sacar(decimal valor)
+        public decimal Sacar(decimal valor)
         {
            
-                if (valor > _saldo)
+                if (_saldo - valor >= 0)
+                {
+                    _saldo -= valor;
+                    return _saldo;
+                }
+
+                else 
                 {
                     //Console.WriteLine("Valor de saque é maior que o saldo atual.");
                     throw new OperacaoInvalidaException($"Valor de saque {valor:C} é maior que o saldo atual.");
-                }
-                else
-                {
-                    Console.WriteLine($"Seu saldo era de {_saldo:C}");
-                    _saldo -= valor;
-                    Console.WriteLine($"Saque de {valor:C} realizado com sucesso");
                 }
             
            
         }
 
         
-
+        // fazer slides 26 30 31 32
 
 
     }

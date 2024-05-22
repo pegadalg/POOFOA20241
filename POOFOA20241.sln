@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaFinanceiro", "SistemaFinanceiro\SistemaFinanceiro.csproj", "{6967FBE3-E88A-4202-9B8D-8FF8C6C3C6F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteSistemaBancario", "TesteSistemaBancario\TesteSistemaBancario.csproj", "{8BD5F362-10ED-4A39-ADA8-39B1C338F9E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaFinanceiroTeste", "TesteSistemaBancario\SistemaFinanceiroTeste.csproj", "{8BD5F362-10ED-4A39-ADA8-39B1C338F9E2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{6967FBE3-E88A-4202-9B8D-8FF8C6C3C6F5} = {6967FBE3-E88A-4202-9B8D-8FF8C6C3C6F5}
 	EndProjectSection

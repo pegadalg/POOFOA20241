@@ -2,7 +2,7 @@ using SistemaFinanceiro.Exceptions;
 using SistemaFinanceiro.Model;
 using System.Drawing;
 
-namespace TesteSistemaFinanceiro
+namespace SistemaFinanceiroTeste
 {
     
     [TestClass]
@@ -11,10 +11,13 @@ namespace TesteSistemaFinanceiro
         [TestMethod]
         public void DeveDepositar()
         {
+            //cenário
             var conta1 = new Conta(1234, 1000);
 
+            //Ação
             conta1.Depositar(1000);
 
+            //verificação
             Assert.AreEqual(2000, conta1.Saldo);
          
             
