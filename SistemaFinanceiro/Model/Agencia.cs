@@ -12,6 +12,7 @@ namespace SistemaFinanceiro.Model
         
         private int _numero;
         private string _nome, _telefone;
+        private string _cep;
         
 
         public Agencia(int numero) 
@@ -36,7 +37,11 @@ namespace SistemaFinanceiro.Model
             set => _telefone = value;
         }
 
-
+        public string Cep
+        {
+            get => _cep;
+            set => _cep = value;
+        }
 
 
 
