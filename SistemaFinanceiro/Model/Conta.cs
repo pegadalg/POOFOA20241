@@ -1,31 +1,20 @@
 ﻿using SistemaFinanceiro.Exceptions;
 using System;
 
-//Toda conta deve obrigatoriamente ter um cliente e pertencer a uma agencia,
-//sabendo que agencia possui um número, um CEP e um telefone para contato
-//e pertence a um banco que possui um nome e um número correspondente;
-//Criar métodos dentro de programa para garantir que os objetos atendam aos
-//requisitos especificados
-//Criar função para informar a idade do clientes em romanos. Orcs também
-//podem ser clientes... Quantos anos pode ter um Orc bem velho? (opcional)
-
-
-
 namespace SistemaFinanceiro.Model
 {
     public class Conta
     {
         private long _numero;
-        private decimal _saldo;
-        public Agencia agencia;
-        public Cliente cliente;  
+        private decimal _saldo;      
+        private Cliente _cliente;
+        public decimal tarifa = 0.10m;
 
-        public Conta(long numero, decimal saldo, Cliente cliente , Agencia agencia ) 
+        public Conta(long numero, decimal saldo, Cliente cliente  ) 
         {
             _numero = numero;
             _saldo = saldo;
-            this.cliente = cliente;
-            this.agencia = agencia;
+            _cliente = cliente;            
 
             if (saldo > 10 )
             {
@@ -33,21 +22,20 @@ namespace SistemaFinanceiro.Model
             }
             else
             {               
-                throw new OperacaoInvalidaException($"O cliente {cliente.Nome} deve ter o saldo maior do que 10");
+                throw new OperacaoInvalidaException($"O cliente {cliente.Nome} deve ter o saldo maior do que 10. Programa irá se encerrar");
 
             }
 
             if (cliente != null)
             {
-                this.cliente = cliente;
+                _cliente = cliente;
             }
             else
             {               
-                throw new OperacaoInvalidaException("Cliente não pode ser nulo");
+                throw new OperacaoInvalidaException("Cliente não pode ser nulo. Programa irá se encerrar");
 
             }
         }
-
         public long Numero 
         {
             get => _numero;
@@ -57,70 +45,72 @@ namespace SistemaFinanceiro.Model
             }
 
         }
-
         public decimal Saldo 
         { 
             get => _saldo;
         
         }
+        public Cliente Cliente
+        {
+            get => _cliente;
+        }
+
+
 
         public decimal Depositar(decimal valor)
-        {
-             
+        {   
                 if (valor > 0)
                 {
                     _saldo += valor;
                     return _saldo;
                 }
-
                 else
                 {
-                    //Console.WriteLine("Valor inválido"); 
-                    throw new OperacaoInvalidaException($"O valor de depósito: {valor:C} é inválido");
-                }
-            
-            
-
+                    throw new OperacaoInvalidaException($"O valor de depósito: {valor:C} é inválido. Programa irá se encerrar");
+                }                  
         }
-
+        
         public decimal Sacar(decimal valor)
         {
-           
-                if (_saldo - valor - 0.10m >= 0)
+           if (valor > 0)
+            { 
+                if (_saldo - (valor + tarifa) >= 0)
                 {
-                    _saldo -= valor - 0.10m;
+                    _saldo -= valor + tarifa;
                     return _saldo;
                 }
 
                 else 
                 {
-                    //Console.WriteLine("Valor de saque é maior que o saldo atual.");
-                    throw new OperacaoInvalidaException($"Valor de saque {valor:C} é maior que o saldo atual.");
+                    throw new OperacaoInvalidaException($"Valor de saque {valor:C} é maior que o saldo atual. Programa irá se encerrar");
                 }
-            
-           
+            }
+           else
+            {
+                throw new OperacaoInvalidaException($"O valor de saque: {valor:C} é inválido. Programa irá se encerrar");
+            }
+
         }
 
         public void Transferir(decimal valor, Conta contaDestino)
         {
-            if (_saldo - valor >= 0)
+            if (valor <= 0)
             {
-                _saldo -= valor;
+                throw new OperacaoInvalidaException($"O valor de transferência é inválido. Programa irá se encerrar");
+            }
+            else if (_saldo - valor >= 0)
+            {
                 contaDestino.Depositar(valor);
+                _saldo -= valor;
+                
 
-                Console.WriteLine($"Transferência realizada com sucesso. Saldo atual: {Saldo:C}");
+                Console.WriteLine($"Transferência da conta {Numero} para a conta {contaDestino.Numero} realizada com sucesso. Saldo atual: {Saldo:C}");
                 Console.WriteLine($"Saldo da conta destino: {contaDestino.Saldo:C}");
             }
             else
             {
-                //Console.WriteLine("Saldo insuficiente para transferência");
-                throw new OperacaoInvalidaException("Saldo insuficiente para transferência");
+                throw new OperacaoInvalidaException("Saldo insuficiente para transferência. Programa irá se encerrar");
             }
         }
-
-        
-        // fazer slides 26 30 31 32
-
-
     }
 }

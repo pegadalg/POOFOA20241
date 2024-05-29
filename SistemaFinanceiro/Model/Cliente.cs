@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SistemaFinanceiro.Model
@@ -15,27 +16,16 @@ namespace SistemaFinanceiro.Model
         private string cpf;
         private int anoNascimento;
             
-
-
         public Cliente(string nome, string cpf, int anoNascimento)
-        {
-            try
+        {        
+            if (!Regex.IsMatch(cpf, @"^\d{11}$"))
             {
-                if ((!Int64.IsPositive(Int64.Parse(cpf))) || (cpf.Length != 11))
-                {
-
-                    throw new OperacaoInvalidaException("O CPF deve conter 11 dígitos");
-                }
+                throw new OperacaoInvalidaException("O CPF deve conter 11 caracteres, sendo os 11 apenas números. Programa irá se encerrar");
             }
-            catch(Exception)
-            {
-                throw new OperacaoInvalidaException("O CPF só deve conter números");
-            }
-
 
             if (anoNascimento > DateTime.Now.Year - 18)
             {               
-                throw new OperacaoInvalidaException("O Cliente deve ser maior de idade");
+                throw new OperacaoInvalidaException("O Cliente deve ser maior de idade. Programa irá se encerrar");
             }   
 
             this.nome = nome;
@@ -65,15 +55,12 @@ namespace SistemaFinanceiro.Model
             get { return DateTime.Now.Year - anoNascimento; }
         }
 
-        public void MostrarIdadeEmRomano()
+        public string MostrarIdadeEmRomano()
         {
-            //Criar função para informar a idade do clientes em romanos
-
             int idade = Idade;
             string romano = "";
-            if (idade > 0)
-            {
-                if (idade >= 1000)
+            
+                while (idade >= 1000)
                 {
                     romano += "M";
                     idade -= 1000;
@@ -138,13 +125,10 @@ namespace SistemaFinanceiro.Model
                     romano += "I";
                     idade -= 1;
                 }
-                Console.WriteLine($"Idade em romano: {romano}");
-            }
-            else
-            {
-                Console.WriteLine("Idade inválida");
-
-            }
+                return romano;
+            
+            
         }
+
     }
 }

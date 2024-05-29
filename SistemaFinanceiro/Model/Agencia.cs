@@ -13,11 +13,13 @@ namespace SistemaFinanceiro.Model
         private int _numero;
         private string _nome, _telefone;
         private string _cep;
+        private List<Conta> _contas = new List<Conta>();
         
 
-        public Agencia(int numero) 
+        public Agencia(int numero , Conta conta) 
         {
-            this._numero = numero;
+            _numero = numero;
+            Contas.Add(conta);
         }
 
         public int Numero
@@ -41,6 +43,10 @@ namespace SistemaFinanceiro.Model
         {
             get => _cep;
             set => _cep = value;
+        }
+        public List<Conta> Contas
+        {
+            get => _contas;
         }
 
 
