@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SistemaFinanceiro.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,11 @@ namespace SistemaFinanceiro.Model
 
         public Agencia(int numero , Conta conta) 
         {
+            if (conta == null)
+            {
+                throw new OperacaoInvalidaException("Conta não pode ser nula. Programa irá se encerrar");
+            }
+
             _numero = numero;
             Contas.Add(conta);
         }

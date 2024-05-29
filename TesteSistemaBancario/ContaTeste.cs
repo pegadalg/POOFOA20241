@@ -118,7 +118,7 @@ namespace SistemaFinanceiroTeste
 
         [TestMethod]
 
-        public void DeveFalharAoMostrarIdadeEmRomano()
+        public void DeveFalharAoCriarClienteMenorDe18Anos()
         {
             
             //Ação
@@ -127,7 +127,86 @@ namespace SistemaFinanceiroTeste
             Assert.AreEqual("O Cliente deve ser maior de idade. Programa irá se encerrar", ex.Message);
         }
 
+        [TestMethod]
 
+        public void DeveFalharAoCriarClienteComCpfInvalido()
+        {
+            //Ação
+            var ex = Assert.ThrowsException<OperacaoInvalidaException>(() => new Cliente("João", "1234567890", 2000));
+            //verificação
+            Assert.AreEqual("O CPF deve conter 11 caracteres, sendo os 11 apenas números. Programa irá se encerrar", ex.Message);
+        }
 
+        [TestMethod]
+
+        public void DeveCriarCliente()
+        {
+            //cenário
+            var cliente1 = new Cliente("João", "12345678901", 2000);
+            //verificação
+            Assert.AreEqual("João", cliente1.Nome);
+            Assert.AreEqual("12345678901", cliente1.Cpf);
+            Assert.AreEqual(2000, cliente1.AnoNascimento);
+        }
+
+        [TestMethod]
+
+        public void DeveCriarConta()
+        {
+            //cenário
+            var cliente1 = new Cliente("João", "12345678901", 2000);
+            //Ação
+            var conta1 = new Conta(1234, 1000, cliente1);
+            //verificação
+            Assert.AreEqual(1234, conta1.Numero);
+            Assert.AreEqual(1000, conta1.Saldo);
+            Assert.AreEqual(cliente1, conta1.Cliente);
+        }
+
+        [TestMethod]
+
+        public void DeveFalharAoCriarContaComSaldoMenorQue10()
+        {
+            //cenário
+            var cliente1 = new Cliente("João", "12345678901", 2000);
+            //Ação
+            var ex = Assert.ThrowsException<OperacaoInvalidaException>(() => new Conta(1234, 1, cliente1));
+            //verificação
+            Assert.AreEqual("O cliente João deve ter o saldo maior do que 10. Programa irá se encerrar", ex.Message);
+        }
+
+        [TestMethod]
+
+        public void DeveFalharAoCriarContaComClienteNulo()
+        {
+            //Ação
+            var ex = Assert.ThrowsException<OperacaoInvalidaException>(() => new Conta(1234, 1000, null));
+            //verificação
+            Assert.AreEqual("Cliente não pode ser nulo. Programa irá se encerrar", ex.Message);
+        }
+
+        [TestMethod]
+
+        public void DeveCriarAgencia()
+        {
+            //cenário
+            var cliente1 = new Cliente("João", "12345678901", 2000);
+            var conta1 = new Conta(1234, 1000, cliente1);
+            //Ação
+            var agencia1 = new Agencia(1234, conta1);
+            //verificação
+            Assert.AreEqual(1234, agencia1.Numero);
+            Assert.AreEqual(conta1, agencia1.Contas[0]);
+        }
+
+        [TestMethod]
+
+        public void DeveFalharAoCriarAgenciaComContaNula()
+        {
+            //Ação
+            var ex = Assert.ThrowsException<OperacaoInvalidaException>(() => new Agencia(1234, null));
+            //verificação
+            Assert.AreEqual("Conta não pode ser nula. Programa irá se encerrar", ex.Message);
+        }
     }
 }
